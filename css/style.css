@@ -352,6 +352,22 @@ a:focus {
     margin-right: 10px;
 }
 
+@media (max-width: 492px) {
+    .hero{
+        height: 240px;
+    }
+    .hero .hero-text{
+        top: -38px;
+        margin-top: -10px;
+    }
+    .hero .hero-image img {
+        bottom: 20px;
+        margin-bottom: -19px;
+        object-fit: cover;
+        position: absolute;
+        height: 240px;
+    }
+}
 @media (min-width: 991.98px) {
     .hero .hero-image img {
         margin-top: 0;
