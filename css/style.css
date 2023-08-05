@@ -334,7 +334,7 @@ a:focus {
 
 .hero .hero-btn .btn {
     padding: 12px 20px;
-    font-size: 14px;
+    font-size: 25px;
     font-weight: 600;
     letter-spacing: 1px;
     color: #9cdbff;
@@ -367,6 +367,16 @@ a:focus {
         position: absolute;
         height: 240px;
     }
+    .hero .hero-btn .btn {
+    padding: 12px 20px;
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #9cdbff;
+    background: #343148;
+    border-radius: 0;
+    transition: .3s;
+}
 }
 @media (min-width: 991.98px) {
     .hero .hero-image img {
@@ -435,6 +445,16 @@ a:focus {
         font-weight: 400;
         letter-spacing: 0;
     }
+    .hero .hero-btn .btn {
+    padding: 12px 20px;
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #9cdbff;
+    background: #343148;
+    border-radius: 0;
+    transition: .3s;
+}
 }
 
 
