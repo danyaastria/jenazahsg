@@ -724,7 +724,11 @@ a:focus {
         transform: translateY(25%);
     }
 }
-
+/********* Service grave *********/
+.service .graveicon {
+    height: 48px;
+    margin-top: -15px;
+}
 
 /*******************************/
 /********** Class CSS **********/
