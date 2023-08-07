@@ -456,6 +456,16 @@ a:focus {
     transition: .3s;
 }
 }
+/******* Hero call now segment *******/
+.callinfo{
+    display: flex;
+    align-items: center;
+}
+.callinfo p{
+    float: center;
+    margin-top: 25px;
+    font-family: 'REM', sans-serif;
+}
 
 
 /*******************************/
