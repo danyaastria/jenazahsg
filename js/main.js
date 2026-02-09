@@ -27,7 +27,6 @@
         }
     });
 
-    // Document ready: combine all code
     $(document).ready(function () {
 
         // --- Dropdown hover ---
@@ -87,48 +86,55 @@
         });
 
         // --- Load testimonials dynamically ---
-        const API_URL = "https://script.google.com/macros/s/AKfycbziSzKTAdikNYDKZOMhaSZ1dl_vb1T61MIv9n8gOwnxMd7f5FqpOuR5p1IWdFOmUDFUQQ/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbzBZualM5GhqWcKi-fTryI4FkYai4t0SnlTyBR4A-lzwTY03vfEN29-7c16yMBLI9nz7g/exec";
         const $carousel = $(".testimonials-carousel");
 
         fetch(API_URL)
             .then(res => res.json())
             .then(data => {
-                console.log("Testimonials data:", data);
+                console.log("Testimonials API data:", data);
 
                 if (!data || !data.length) {
                     $carousel.html("<p>No testimonials yet.</p>");
                     return;
                 }
 
-                // Destroy existing carousel if any
-                if ($carousel.hasClass('owl-loaded')) {
-                    $carousel.trigger('destroy.owl.carousel').removeClass('owl-loaded');
-                }
-
+                // Clear existing content
                 $carousel.empty();
 
+                // Append each testimonial
                 data.forEach(r => {
-                    const stars = "⭐".repeat(r.rating || 0);
-                    $carousel.append(`
-                        <div class="testimonial-item wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="testimonial-img">
-                                ${r.photo ? `<img src="${r.photo}" alt="${r.name}">` : ""}
-                            </div>
-                            <div class="testimonial-text">
-                                <p>${r.review}</p>
-                                <h3>${r.name}</h3>
-                                <span>${stars}</span>
-                            </div>
-                        </div>
-                    `);
-                });
+                const stars = "⭐".repeat(r.rating || 0);
 
-                // Initialize Owl Carousel
+                // Convert Google Drive link to direct image link
+                let photoUrl = "";
+                if (r.photo) {
+                    const match = r.photo.match(/(?:id=|file\/d\/)([-\w]+)(?:\/|$)/);
+                    if (match && match[1]) {
+                        photoUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                    }
+                }
+
+                $carousel.append(`
+                    <div class="testimonial-item wow fadeInUp" data-wow-delay="0.1s">
+                        ${photoUrl ? `<div class="testimonial-img"><img src="${photoUrl}" alt="${r.name}"></div>` : ""}
+                        <div class="testimonial-text">
+                            <p>${r.review}</p>
+                            <h3>${r.name}</h3>
+                            <span>${stars}</span>
+                        </div>
+                    </div>
+                `);
+            });
+
+
+                // Initialize Owl Carousel AFTER content is added
                 $carousel.owlCarousel({
                     center: true,
                     autoplay: true,
                     dots: true,
                     loop: true,
+                    margin: 20,
                     responsive: {
                         0: { items: 1 },
                         576: { items: 1 },
@@ -137,10 +143,13 @@
                     }
                 });
 
-                // Refresh WOW.js for new elements
+                // Refresh WOW.js for newly injected elements
                 new WOW().sync();
             })
-            .catch(err => console.error("Testimonials error:", err));
+            .catch(err => {
+                console.error("Testimonials error:", err);
+                $carousel.html("<p>Failed to load testimonials.</p>");
+            });
     });
 
 })(jQuery);
