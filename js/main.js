@@ -122,5 +122,58 @@
         portfolioIsotope.isotope({filter: $(this).data('filter')});
     });
     
+    // Load testimonials from Google Apps Script
+    $(document).ready(function () {
+
+        const API_URL = "https://script.google.com/macros/s/AKfycbziSzKTAdikNYDKZOMhaSZ1dl_vb1T61MIv9n8gOwnxMd7f5FqpOuR5p1IWdFOmUDFUQQ/exec";
+
+        fetch(API_URL)
+            .then(res => res.json())
+            .then(data => {
+
+                const $carousel = $(".testimonials-carousel");
+                $carousel.empty(); // remove existing static testimonials
+
+                data.forEach(r => {
+                    const stars = "⭐".repeat(r.rating);
+
+                    const item = `
+                        <div class="testimonial-item">
+                            <div class="testimonial-img">
+                                ${r.photo ? `<img src="${r.photo}" alt="${r.name}">` : ""}
+                            </div>
+                            <div class="testimonial-text">
+                                <p>${r.review}</p>
+                                <h3>${r.name}</h3>
+                                <span>${stars}</span>
+                            </div>
+                        </div>
+                    `;
+
+                    $carousel.append(item);
+                });
+
+                // Destroy & re-init Owl Carousel
+                $carousel.trigger('destroy.owl.carousel');
+                $carousel.owlCarousel({
+                    center: true,
+                    autoplay: true,
+                    dots: true,
+                    loop: true,
+                    responsive: {
+                        0:{ items:1 },
+                        576:{ items:1 },
+                        768:{ items:2 },
+                        992:{ items:3 }
+                    }
+                });
+
+            })
+            .catch(err => {
+                console.error("Failed to load reviews", err);
+            });
+    });
+
+  
 })(jQuery);
 
