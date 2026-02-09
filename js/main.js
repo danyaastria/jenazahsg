@@ -1,10 +1,10 @@
 (function ($) {
     "use strict";
 
-    // Initiate WOW.js
+    // Initiate WOW
     new WOW().init();
 
-    // Back to top button
+    // Back to top
     $(window).scroll(function () {
         if ($(this).scrollTop() > 200) {
             $('.back-to-top').fadeIn('slow');
@@ -27,17 +27,15 @@
         }
     });
 
-    // Dropdown on mouse hover
+    // Dropdown hover
     $(document).ready(function () {
         function toggleNavbarMethod() {
             if ($(window).width() > 992) {
-                $('.navbar .dropdown')
-                    .on('mouseover', function () {
-                        $('.dropdown-toggle', this).trigger('click');
-                    })
-                    .on('mouseout', function () {
-                        $('.dropdown-toggle', this).trigger('click').blur();
-                    });
+                $('.navbar .dropdown').on('mouseover', function () {
+                    $('.dropdown-toggle', this).trigger('click');
+                }).on('mouseout', function () {
+                    $('.dropdown-toggle', this).trigger('click').blur();
+                });
             } else {
                 $('.navbar .dropdown').off('mouseover').off('mouseout');
             }
@@ -46,15 +44,15 @@
         $(window).resize(toggleNavbarMethod);
     });
 
-    // Blogs carousel (UNCHANGED)
+    // Blogs carousel (unchanged)
     $(".blog-carousel").owlCarousel({
         autoplay: true,
         dots: false,
         loop: true,
         nav: true,
         navText: [
-            '<i class="fa fa-angle-left" aria-hidden="true"></i>',
-            '<i class="fa fa-angle-right" aria-hidden="true"></i>'
+            '<i class="fa fa-angle-left"></i>',
+            '<i class="fa fa-angle-right"></i>'
         ],
         responsive: {
             0: { items: 1 },
@@ -64,7 +62,7 @@
         }
     });
 
-    // Class filter
+    // Isotope filters (unchanged)
     var classIsotope = $('.class-container').isotope({
         itemSelector: '.class-item',
         layoutMode: 'fitRows'
@@ -76,7 +74,6 @@
         classIsotope.isotope({ filter: $(this).data('filter') });
     });
 
-    // Portfolio filter
     var portfolioIsotope = $('.portfolio-container').isotope({
         itemSelector: '.portfolio-item',
         layoutMode: 'fitRows'
@@ -88,9 +85,7 @@
         portfolioIsotope.isotope({ filter: $(this).data('filter') });
     });
 
-    // ===============================
-    // TESTIMONIALS (GOOGLE FORMS API)
-    // ===============================
+    // ✅ LOAD TESTIMONIALS (FIXED)
     $(document).ready(function () {
 
         const API_URL = "https://script.google.com/macros/s/AKfycbziSzKTAdikNYDKZOMhaSZ1dl_vb1T61MIv9n8gOwnxMd7f5FqpOuR5p1IWdFOmUDFUQQ/exec";
@@ -100,15 +95,12 @@
             .then(res => res.json())
             .then(data => {
 
-                if (!data || !data.length) {
-                    console.warn("No testimonials found");
-                    return;
-                }
+                if (!data || !data.length) return;
 
                 $carousel.empty();
 
                 data.forEach(r => {
-                    const stars = "⭐".repeat(Number(r.rating) || 0);
+                    const stars = "⭐".repeat(r.rating || 0);
 
                     $carousel.append(`
                         <div class="testimonial-item">
@@ -124,7 +116,7 @@
                     `);
                 });
 
-                // Init Owl Carousel AFTER content is added
+                // 🔥 INIT OWL ONLY AFTER CONTENT EXISTS
                 $carousel.owlCarousel({
                     center: true,
                     autoplay: true,
@@ -138,7 +130,7 @@
                     }
                 });
             })
-            .catch(err => console.error("Failed to load testimonials:", err));
+            .catch(err => console.error("Testimonials error:", err));
     });
 
 })(jQuery);
